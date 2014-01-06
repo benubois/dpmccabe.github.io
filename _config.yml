@@ -1,3 +1,12 @@
-name: Your New Jekyll Site
+name: dmcca.be
 markdown: redcarpet
 pygments: true
+
+asset_pipeline:
+  bundle: true
+  compress: true
+  output_path: assets
+  gzip: false
+
+destination: public
+exclude: ["CNAME", "Rakefile", "README.md", "public"]

@@ -1,0 +1,33 @@
+!!!
+%html
+  %head
+    %meta{charset: "utf-8"}/
+    %meta{content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title {{ page.title }}
+    %meta{content: "width=device-width", name: "viewport"}/
+    {% css_asset_tag global %}
+    = "- /_assets/css/application.scss"
+    {% endcss_asset_tag %}
+  %body
+    .site
+      .header
+        %h1.title
+          %a{href: "/"} {{ site.name }}
+        %a.extra{href: "/"} home
+      
+      {{ content }}
+      
+      .footer
+        .contact
+          %p
+            Your Name
+            %br/
+            What You Are
+            %br/
+            you@example.com
+        .contact
+          %p
+            %a{href: "https://github.com/yourusername"} github.com/yourusername
+            %br/
+            %a{href: "https://twitter.com/yourusername"} twitter.com/yourusername
+            %br/
