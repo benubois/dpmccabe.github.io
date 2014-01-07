@@ -10,3 +10,5 @@ source: src
 destination: public
 exclude: ["CNAME", "Rakefile", "README.md", "public"]
 excerpt_separator: <!-- more -->
+paginate: 5
+paginate_path: "/page::num"

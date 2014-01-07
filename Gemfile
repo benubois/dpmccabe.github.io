@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
 
-gem 'liquid', '2.4'
+gem 'liquid'
 gem 'rack-jekyll'
 gem 'jekyll-asset-pipeline', git: 'https://github.com/matthodan/jekyll-asset-pipeline'
 gem 'compass'
