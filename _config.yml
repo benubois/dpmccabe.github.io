@@ -8,5 +8,6 @@ asset_pipeline:
   output_path: assets
   gzip: false
 
+source: src
 destination: public
 exclude: ["CNAME", "Rakefile", "README.md", "public"]
