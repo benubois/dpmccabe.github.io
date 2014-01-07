@@ -1,2 +1,140 @@
 @import "_settings";
 @import "foundation";
+@import "compass/css3/border-radius";
+
+$bg: #f5f0df;
+$accent: #ab5011;
+$action: #0869a3;
+$sidebar-subtext: desaturate(darken($bg, 20%), 35%);
+$main-subtext: desaturate(darken($bg, 30%), 35%);
+$main-divider: desaturate(darken($bg, 10%), 10%);
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Oswald', serif;
+  color: $accent;
+}
+
+a, .side-nav li a {
+  color: $action;
+
+  &:hover, &:active {
+    color: #000;
+  }
+}
+
+body {
+  background: $bg;
+  border-top: $accent solid 5px;
+}
+
+#sidebar {
+  background: #fff;
+  overflow: hidden;
+  padding: 50px 0 20px 0;
+  border-bottom: $accent solid 5px;
+
+  header {
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto 20px auto;
+
+    h1 {
+      line-height: 1;
+      margin: 0;
+
+      a {
+        img {
+          @include border-radius(200px);
+        }
+
+        div {
+          padding: 20px 0;
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    ul#subtitle {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        color: $sidebar-subtext;
+        font-size: 0.9rem;
+        line-height: normal;
+      }
+    }
+  }
+
+  nav {
+    max-width: 90%;
+    margin: 20px auto;
+    padding: 20px 0;
+    border: $bg solid;
+    border-width: 1px 0;
+
+    ul.side-nav {
+      padding: 0;
+
+      li {
+        line-height: normal;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        a {
+          font-weight: bold;
+        }
+
+        ul {
+          list-style-type: none;
+          padding: 5px 0 0 0;
+
+          li {
+            a {
+              font-weight: normal;
+
+              &.archive {
+                font-size: 0.7rem;
+                font-style: italic;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#main {
+  padding: 50px 0 20px 10px;
+}
+
+.post {
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 00;
+  }
+
+  p.post-info {
+    span.date {
+      text-transform: uppercase;
+      color: $main-subtext;
+    }
+  }
+
+  article {
+    &.excerpt {
+
+    }
+  }
+}
+
+.post + .post {
+  border-top: $main-divider solid 1px;
+  margin-top: 20px;
+  padding-top: 20px;
+}

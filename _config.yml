@@ -1,13 +1,12 @@
 name: dmcca.be
 markdown: redcarpet
 pygments: true
-
 asset_pipeline:
   bundle: true
   compress: true
   output_path: assets
   gzip: false
-
 source: src
 destination: public
 exclude: ["CNAME", "Rakefile", "README.md", "public"]
+excerpt_separator: <!-- more -->
