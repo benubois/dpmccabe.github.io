@@ -1,13 +1,15 @@
-@import "_settings";
-@import "foundation";
-@import "compass/css3/border-radius";
-
 $bg: #f5f0df;
 $accent: #ab5011;
 $action: #0869a3;
+$action-hover: desaturate(lighten($action, 15%), 15%);
 $sidebar-subtext: desaturate(darken($bg, 20%), 35%);
 $main-subtext: desaturate(darken($bg, 30%), 35%);
 $main-divider: desaturate(darken($bg, 10%), 10%);
+
+@import "_settings";
+@import "foundation";
+@import "compass/css3/border-radius";
+@import "compass/css3/transition";
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Oswald', serif;
@@ -16,9 +18,22 @@ h1, h2, h3, h4, h5, h6 {
 
 a, .side-nav li a {
   color: $action;
+  @include transition-property(color);
+  @include transition-duration(0.20s);
+  @include transition-timing-function(linear);  
 
   &:hover, &:active {
-    color: #000;
+    color: $action-hover;
+  }
+}
+
+button, .button {
+  @include transition-property(background-color);
+  @include transition-duration(0.20s);
+  @include transition-timing-function(linear);  
+
+  &:hover, &:focus {
+    background-color: $action-hover;
   }
 }
 
@@ -113,13 +128,19 @@ body {
 }
 
 .post {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 
-  h2 {
-    margin: 00;
+  &.archive {
+    margin-bottom: 5px;
+  }
+
+  h2, h5 {
+    margin: 0;
   }
 
   p.post-info {
+    margin-bottom: 0;
+
     span.date {
       text-transform: uppercase;
       color: $main-subtext;
@@ -128,7 +149,13 @@ body {
 
   article {
     &.excerpt {
+      p.read-more {
+        margin-bottom: 0;
 
+        a.button {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 }
@@ -136,5 +163,14 @@ body {
 .post + .post {
   border-top: $main-divider solid 1px;
   margin-top: 20px;
-  padding-top: 20px;
+  padding-top: 15px;
+
+  &.archive {
+    margin-top: 5px;
+    padding-top: 5px;
+  }
+}
+
+ul.pagiation {
+  text-align: center;
 }

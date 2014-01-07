@@ -52,7 +52,7 @@ $body-font-family: 'Open Sans', "Helvetica Neue", "Helvetica", Helvetica, Arial,
 // $default-float: left;
 
 // We use these as default colors throughout
-// $primary-color: #008CBA;
+$primary-color: $action;
 // $secondary-color: #e7e7e7;
 // $alert-color: #f04124;
 // $success-color: #43AC6A;
@@ -594,12 +594,12 @@ $body-font-family: 'Open Sans', "Helvetica Neue", "Helvetica", Helvetica, Arial,
 
 // We use these for the pagination anchor links
 // $pagination-link-pad: rem-calc(1 10 1);
-// $pagination-link-font-color: #999;
-// $pagination-link-active-bg: darken(#fff, 10%);
+$pagination-link-font-color: $main-subtext;
+$pagination-link-active-bg: darken($bg, 5%);
 
 // We use these for disabled anchor links
 // $pagination-link-unavailable-cursor: default;
-// $pagination-link-unavailable-font-color: #999;
+$pagination-link-unavailable-font-color: $main-subtext;
 // $pagination-link-unavailable-bg-active: transparent;
 
 // We use these for currently selected anchor links
@@ -995,3 +995,5 @@ $body-font-family: 'Open Sans', "Helvetica Neue", "Helvetica", Helvetica, Arial,
 // Sticky Class
 // $topbar-sticky-class: ".sticky";
 // $topbar-arrows: true; //Set false to remove the triangle icon from the menu item
+
+$button-font-tny: rem-calc(15);

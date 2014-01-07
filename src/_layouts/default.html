@@ -54,13 +54,13 @@
                     <li>
                       <a href="/"> Posts</a>
                       <ul>
-                        {% for post in site.posts %}
+                        {% for post in site.posts limit:5 %}
                         <li>
                           <a href="{{ post.url }}">{{ post.title }}</a>
                         </li>
                         {% endfor %}
                         <li>
-                          <a href="/archive" class="archive">more&hellip;</a>
+                          <a href="/archive" class="archive">more posts&hellip;</a>
                         </li>
                       </ul>
                     </li>
