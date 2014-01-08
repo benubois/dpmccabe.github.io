@@ -1,0 +1,26 @@
+<div class="post">
+  <h2>
+    {% if include.post_excerpt %}
+      <a href="{{ include.post_url }}">{{ include.post_title }}</a>
+    {% else %}
+      {{ include.post_title }}
+    {% endif %}
+  </h2>
+  <p class="post-info">
+    {{ include.post_date | date: "%B %d, %Y" }}
+    {% if include.post_content %}
+      &bull; <a href="{{ include.post_url }}">Permalink</a>
+    {% endif %}
+  </p>
+
+  {% if include.post_excerpt %}
+    <article class="excerpt">
+      {{ include.post_excerpt }}
+      <p class="read-more"><a href="{{ include.post_url }}" class="button tiny round">read more&hellip;</a></p>
+    </article>
+  {% else %}
+    <article>
+      {{ include.post_content }}
+    </article>
+  {% endif %}
+</div>

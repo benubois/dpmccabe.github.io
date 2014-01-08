@@ -9,7 +9,11 @@
     <meta name="description" content="todo" />
     <meta name="author" content="todo" />
 
-    <title>{{ page.title }}</title>
+    {% if page.title %}
+      <title>{{ page.title | append: ' - ' | append: site.name }}</title>
+    {% else %}
+      <title>{{ site.name }}</title>
+    {% endif %}
 
     {% css_asset_tag styles %}
       - /_assets/css/application.scss
@@ -20,13 +24,39 @@
       - /_assets/js/vendor/custom.modernizr.js
     {% endjavascript_asset_tag %}
 
-    <!-- favicon -->
+    <link rel="shortcut icon" href="/favicon.ico" />
   </head>
 
   <body>
     <div class="off-canvas-wrap">
       <div class="inner-wrap">
+        <nav class="tab-bar show-for-small" id="mobile-sidebar">
+          <section class="left-small">
+            <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+          </section>
+
+          <section class="middle tab-bar-section">
+            <h1 class="title">Devin McCabe</h1>
+          </section>
+        </nav>
+
+        <aside class="left-off-canvas-menu">
+          <ul class="off-canvas-list">
+            <li><label>Devin McCabe</label></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/work">Work</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li class="seperator"><label>Posts</label></li>
+            {% for post in site.posts limit:5 %}
+              <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+            {% endfor %}
+            <li><a href="/archive" class="archive">more posts&hellip;</a></li>
+          </ul>
+        </aside>
+
         <a class="exit-off-canvas" href="#"></a>
+
         <div class="row">
           <div class="medium-3 large-3 columns">
             <div class="hide-for-small">
@@ -48,27 +78,17 @@
 
                 <nav role="navigation">
                   <ul class="main-navigation side-nav">
-                    <li>
-                      <a href="/about">About</a>
-                    </li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/work">Work</a></li>
+                    <li><a href="/contact">Contact</a></li>
                     <li>
                       <a href="/"> Posts</a>
                       <ul>
                         {% for post in site.posts limit:5 %}
-                        <li>
-                          <a href="{{ post.url }}">{{ post.title }}</a>
-                        </li>
+                          <li><a href="{{ post.url }}">{{ post.title }}</a></li>
                         {% endfor %}
-                        <li>
-                          <a href="/archive" class="archive">more posts&hellip;</a>
-                        </li>
+                        <li><a href="/archive" class="archive">more posts&hellip;</a></li>
                       </ul>
-                    </li>
-                    <li>
-                      <a href="/work">Work</a>
-                    </li>
-                    <li>
-                      <a href="/contact">Contact</a>
                     </li>
                   </ul>
                 </nav>
@@ -82,11 +102,10 @@
       </div>
     </div>
 
-    <footer role="contentinfo">
+    <footer>
       <div class="row">
         <div class="large-12 columns">
-          <p>footer stuff</p>
-          <p>more footer stuff</p>
+          <p class="text-center">Powered by <a href="http://jekyllrb.com/">Jekyll</a>, <a href="http://foundation.zurb.com/">Zurb Foundation</a> and <a href="http://pages.github.com/">GitHub Pages</a></p>
         </div>
       </div>
     </footer>

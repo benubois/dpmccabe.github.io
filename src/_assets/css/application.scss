@@ -2,6 +2,7 @@ $bg: #f5f0df;
 $accent: #ab5011;
 $action: #0869a3;
 $action-hover: desaturate(lighten($action, 15%), 15%);
+$footer-action-hover: desaturate(lighten($action, 45%), 25%);
 $sidebar-subtext: desaturate(darken($bg, 20%), 35%);
 $main-subtext: desaturate(darken($bg, 30%), 35%);
 $main-divider: desaturate(darken($bg, 10%), 10%);
@@ -19,7 +20,7 @@ h1, h2, h3, h4, h5, h6 {
 a, .side-nav li a {
   color: $action;
   @include transition-property(color);
-  @include transition-duration(0.20s);
+  @include transition-duration(0.15s);
   @include transition-timing-function(linear);  
 
   &:hover, &:active {
@@ -29,7 +30,7 @@ a, .side-nav li a {
 
 button, .button {
   @include transition-property(background-color);
-  @include transition-duration(0.20s);
+  @include transition-duration(0.15s);
   @include transition-timing-function(linear);  
 
   &:hover, &:focus {
@@ -37,9 +38,18 @@ button, .button {
   }
 }
 
+html {
+  height: 100%;
+}
+
 body {
+  min-height: 100%;
   background: $bg;
-  border-top: $accent solid 5px;
+  padding-bottom: 3rem;
+
+  @media #{$medium-up} {
+    border-top: $accent solid 5px;
+  }
 }
 
 #sidebar {
@@ -86,8 +96,7 @@ body {
     max-width: 90%;
     margin: 20px auto;
     padding: 20px 0;
-    border: $bg solid;
-    border-width: 1px 0;
+    border-top: $bg solid 1px;
 
     ul.side-nav {
       padding: 0;
@@ -123,6 +132,10 @@ body {
   }
 }
 
+nav#mobile-sidebar {
+  min-height: 100%;
+}
+
 #main {
   padding: 50px 0 20px 10px;
 }
@@ -140,14 +153,13 @@ body {
 
   p.post-info {
     margin-bottom: 0;
-
-    span.date {
-      text-transform: uppercase;
-      color: $main-subtext;
-    }
+    color: $main-subtext;
+    text-transform: uppercase;
   }
 
   article {
+    margin-top: 15px;
+
     &.excerpt {
       p.read-more {
         margin-bottom: 0;
@@ -155,6 +167,31 @@ body {
         a.button {
           margin-bottom: 0;
         }
+      }
+    }
+  }
+}
+
+footer {
+  background: $action;
+  position: absolute;
+  bottom: 0;
+  height: 3rem;
+  padding: 1rem 0;
+  width: 100%;
+
+  p {
+    margin: 0;
+    color: $main-divider;
+    font-size: 0.9rem;
+    height: 1rem;
+    line-height: 1rem;
+
+    a {
+      color: #fff;
+
+      &:hover, &:active {
+        color: $footer-action-hover;
       }
     }
   }
@@ -173,4 +210,12 @@ body {
 
 ul.pagiation {
   text-align: center;
+}
+
+ul.off-canvas-list li.seperator {
+  border-top: darken($off-canvas-bg, 5%) solid 1px;
+
+  label {
+    border-top: lighten($off-canvas-bg, 5%) solid 1px;
+  }
 }
