@@ -1,0 +1,8 @@
+$bg: #f5f0df;
+$accent: #ab5011;
+$action: #0869a3;
+$action-hover: desaturate(lighten($action, 15%), 15%);
+$footer-action-hover: desaturate(lighten($action, 45%), 25%);
+$sidebar-subtext: desaturate(darken($bg, 20%), 35%);
+$main-subtext: desaturate(darken($bg, 30%), 35%);
+$main-divider: desaturate(darken($bg, 10%), 10%);

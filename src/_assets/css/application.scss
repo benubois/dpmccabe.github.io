@@ -1,12 +1,4 @@
-$bg: #f5f0df;
-$accent: #ab5011;
-$action: #0869a3;
-$action-hover: desaturate(lighten($action, 15%), 15%);
-$footer-action-hover: desaturate(lighten($action, 45%), 25%);
-$sidebar-subtext: desaturate(darken($bg, 20%), 35%);
-$main-subtext: desaturate(darken($bg, 30%), 35%);
-$main-divider: desaturate(darken($bg, 10%), 10%);
-
+@import "_colors";
 @import "_settings";
 @import "foundation";
 @import "compass/css3/border-radius";
@@ -88,6 +80,10 @@ body {
         color: $sidebar-subtext;
         font-size: 0.9rem;
         line-height: normal;
+
+        & + li {
+          margin-top: 10px;
+        }
       }
     }
   }
