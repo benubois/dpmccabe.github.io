@@ -6,7 +6,7 @@ module JekyllAssetPipeline
     require 'compass'
     require 'zurb-foundation'
 
-    Compass.configuration.sass_dir = 'src/_assets/css'
+    Compass.configuration.sass_dir = '_src/_assets/css'
 
     Compass.sass_engine_options[:load_paths].each do |path|
       Sass.load_paths << path
