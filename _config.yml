@@ -6,7 +6,7 @@ asset_pipeline:
   compress: true
   output_path: assets
   gzip: false
-source: _src
+source: src
 destination: public
 exclude: ["CNAME", "Rakefile", "README.md", "public"]
 excerpt_separator: <!-- more -->
