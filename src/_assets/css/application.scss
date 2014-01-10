@@ -30,6 +30,10 @@ button, .button {
   }
 }
 
+hr {
+  border-color: $main-divider;
+}
+
 html {
   height: 100%;
 }
@@ -204,7 +208,7 @@ footer {
   }
 }
 
-ul.pagiation {
+ul.pagination {
   text-align: center;
 }
 
@@ -213,5 +217,77 @@ ul.off-canvas-list li.seperator {
 
   label {
     border-top: lighten($off-canvas-bg, 5%) solid 1px;
+  }
+}
+
+.work {
+  position: relative;
+  border-top: $main-divider solid 1px;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+
+  h3 {
+    margin-top: 0;
+  }
+
+  ul.work-links {
+    margin: 0;
+    
+    & > li {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: $main-disabled;
+
+      &.disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  p {
+    margin-bottom: 0.75rem;
+  }
+
+  table.tech {
+    background: transparent;
+    border: none;
+    border-spacing: 0;
+
+    tr {
+      background: transparent !important;
+    }
+
+    th {
+      text-align: left;
+      color: inherit;
+      padding: 0 2rem 2px 0;
+    }
+
+    td {
+      color: inherit;
+      padding: 0 0 2px 0;
+    }
+  }
+
+  ul.screenshots {
+    li {
+      margin-right: 0;
+      padding: 0 10px 0 0;
+
+      a {
+        background: white;
+        border: $main-divider solid 1px;
+        display: inline-block;
+        padding: 8px;
+
+        &:hover {
+          border-color: $action;
+        }
+
+        img {
+          display: block;
+        }
+      }
+    }
   }
 }
