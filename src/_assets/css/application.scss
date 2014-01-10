@@ -291,3 +291,8 @@ ul.off-canvas-list li.seperator {
     }
   }
 }
+
+.clearing-assembled .clearing-container .carousel > ul {
+  left: auto !important;
+  width: auto !important;
+}
