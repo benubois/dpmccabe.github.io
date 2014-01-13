@@ -259,12 +259,10 @@ ul.off-canvas-list li.seperator {
 
     th {
       text-align: left;
-      color: inherit;
       padding: 0 2rem 2px 0;
     }
 
     td {
-      color: inherit;
       padding: 0 0 2px 0;
     }
   }
@@ -295,4 +293,18 @@ ul.off-canvas-list li.seperator {
 .clearing-assembled .clearing-container .carousel > ul {
   left: auto !important;
   width: auto !important;
+}
+
+table tr th, table tr td {
+  padding: .25rem .5rem;
+  color: inherit;
+  text-align: left;
+}
+
+code {
+  color: #666 !important;
+}
+
+.highlight {
+  margin-bottom: 1.25rem;
 }

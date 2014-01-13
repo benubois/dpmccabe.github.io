@@ -10,6 +10,9 @@
     {{ include.post_date | date: "%B %d, %Y" }}
     {% if include.post_content %}
       &bull; <a href="{{ include.post_url }}">Permalink</a>
+      {% if include.github %}
+        &bull; <a href="{{ include.github }}" target="_blank">GitHub</a>
+      {% endif %}
     {% endif %}
   </p>
 
