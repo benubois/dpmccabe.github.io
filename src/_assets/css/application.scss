@@ -290,9 +290,17 @@ ul.off-canvas-list li.seperator {
   }
 }
 
-.clearing-assembled .clearing-container .carousel > ul {
-  left: auto !important;
-  width: auto !important;
+.clearing-assembled .clearing-container .carousel {
+  margin: 0 0 10px 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: auto;
+
+  & > ul {
+    left: auto !important;
+    width: auto !important;
+  }
 }
 
 table tr th, table tr td {
@@ -303,8 +311,31 @@ table tr th, table tr td {
 
 code {
   color: #666 !important;
+  font-size: 1rem;
+
+  .highlight & {
+    font-size: 0.85rem;
+  }
 }
 
 .highlight {
   margin-bottom: 1.25rem;
+}
+
+.visible-img {
+  margin-top: 100px;
+
+  @media #{$small-only} {
+    margin-top: 0;
+  }
+}
+
+.clearing-main-next > span {
+  margin-left: 15px;
+  margin-right: 0;
+}
+
+.clearing-main-prev > span {
+  margin-left: 0;
+  margin-right: 15px;
 }
