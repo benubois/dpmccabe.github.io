@@ -187,6 +187,10 @@ footer {
     height: 1rem;
     line-height: 1rem;
 
+    @media #{$small-only} {
+      font-size: 0.65rem;
+    }
+
     a {
       color: #fff;
 
