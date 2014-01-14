@@ -3,6 +3,7 @@ layout: post
 title:  "Recurring subscriptions with Ruby, RSpec and modular arithmetic"
 date:   2014-01-09 16:19:50
 github: https://github.com/dpmccabe/subscriptions-with-ruby
+comments: true
 ---
 
 Whether you're developing the latest offering in the monthly subscription box space or simply adding a recurring subscription option to your e-commerce platform, you'll likely find that figuring out how to model subscriptions isn't the most obvious thing. Well, it's not obvious unless you've come across modular arithmetic in a discrete mathematics or CS course.
