@@ -300,6 +300,10 @@ ul.off-canvas-list li.seperator {
   & > ul {
     left: auto !important;
     width: auto !important;
+
+    li.fix-height img {
+      height: auto;
+    }
   }
 }
 
