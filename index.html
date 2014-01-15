@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" ><![endif]-->
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width" initial-scale="1.0" name="viewport" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="todo" />
+    <meta name="author" content="todo" />
+
+    
+      <title>dmcca.be</title>
+    
+
+    <link href='/assets/styles-c0082f636c8acf2a3235ec4939dfc38a.css' rel='stylesheet' type='text/css' />
+
+
+    <script src='/assets/modernizr-a6bf03e55484d99d7f2bb5db16464bac.js' type='text/javascript'></script>
+
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+  </head>
+
+  <body>
+    <div class="off-canvas-wrap">
+      <div class="inner-wrap">
+        <nav class="tab-bar show-for-small" id="mobile-sidebar">
+          <section class="left-small">
+            <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+          </section>
+
+          <section class="middle tab-bar-section">
+            <h1 class="title">Devin McCabe</h1>
+          </section>
+        </nav>
+
+        <aside class="left-off-canvas-menu">
+          <ul class="off-canvas-list">
+            <li><label>Devin McCabe</label></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/work">Work</a></li>
+            <li class="seperator"><label>Posts</label></li>
+            
+              <li><a href="/2014/01/09/recurring-subscriptions-with-ruby-rspec-and-modular-arithmetic.html">Recurring subscriptions with Ruby, RSpec and modular arithmetic</a></li>
+            
+            <li><a href="/archive" class="archive">more posts&hellip;</a></li>
+          </ul>
+        </aside>
+
+        <a class="exit-off-canvas" href="#"></a>
+
+        <div class="row">
+          <div class="medium-3 large-3 columns">
+            <div class="hide-for-small">
+              <div id="sidebar">
+                <header role="banner">
+                  <h1>
+                    <a href="/">
+                      <img src="http://www.gravatar.com/avatar/debd4b932609bb208893ec7eedf8ba9c?s=200" alt="" />
+                      <div>Devin McCabe</div>
+                    </a>
+                  </h1>
+
+                  <ul id="subtitle">
+                    <li>full-stack web developer</li>
+                    <li>math/stats nerd</li>
+                    <li>cheeseburger enthusiast</li>
+                  </ul>
+                </header>
+
+                <nav role="navigation">
+                  <ul class="main-navigation side-nav">
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/work">Work</a></li>
+                    <li>
+                      <a href="/"> Posts</a>
+                      <ul>
+                        
+                          <li><a href="/2014/01/09/recurring-subscriptions-with-ruby-rspec-and-modular-arithmetic.html">Recurring subscriptions with Ruby, RSpec and modular arithmetic</a></li>
+                        
+                        <li><a href="/archive" class="archive">more posts&hellip;</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+          <div class="medium-9 large-9 columns">
+            <div id="main">
+<div class="post">
+  <h2>
+    
+      <a href="/2014/01/09/recurring-subscriptions-with-ruby-rspec-and-modular-arithmetic.html">Recurring subscriptions with Ruby, RSpec and modular arithmetic</a>
+    
+  </h2>
+  <p class="post-info">
+    January 09, 2014
+    
+  </p>
+
+  
+    <article class="excerpt">
+      <p>Whether you&#39;re developing the latest offering in the monthly subscription box space or simply adding a recurring subscription option to your e-commerce platform, you&#39;ll likely find that figuring out how to model subscriptions isn&#39;t the most obvious thing. Well, it&#39;s not obvious unless you&#39;ve come across modular arithmetic in a discrete mathematics or CS course.</p>
+
+<h3>A typical use case</h3>
+
+<p>Say you&#39;re launching a fruit delivery business where a customer can sign up for recurring shipment of (hopefully) fresh fruit at an interval of their choice.</p>
+
+<p>A new customer signing up on January 1 wishing to receive a shipment of fruit every 14 days will need their subscription processed on January 1, January 15, January 29, February 12, and so on. Another customer visiting your site on January 5 might opt for a less frequent delivery of every 30 days and will need their subscription processed on January 5, February 4, March 6, and so on.</p>
+
+<h3>So, how do we represent this information programmatically?</h3>
+
+<p>An inexperienced developer might think: &quot;I know&hellip;I&#39;ll generate a hundred years of processing dates (just to be safe) and store them in my database.&quot;</p>
+
+<p>Obviously, this solution is less than ideal and ignores the fact that there are simple mathematical concepts underlying this system. Recognizing these concepts when coding will make it easier to do things like:</p>
+
+<ul>
+<li>determine which subscriptions should be processed on a given date</li>
+<li>display the next <em>n</em> dates a subscription should be processed</li>
+<li>allow a customer to change their subscription&#39;s frequency or processing date</li>
+</ul>
+
+      <p class="read-more"><a href="/2014/01/09/recurring-subscriptions-with-ruby-rspec-and-modular-arithmetic.html" class="button tiny round">read more&hellip;</a></p>
+    </article>
+  
+</div>
+
+
+
+
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="row">
+        <div class="large-12 columns">
+          <p class="text-center">Powered by <a href="http://jekyllrb.com/">Jekyll</a>, <a href="http://foundation.zurb.com/">Zurb Foundation</a> and <a href="http://pages.github.com/">GitHub Pages</a></p>
+        </div>
+      </div>
+    </footer>
+
+    <script src='/assets/javascripts-22523bd865ea73e748ca25e90c0f3bdd.js' type='text/javascript'></script>
+
+</body></html>

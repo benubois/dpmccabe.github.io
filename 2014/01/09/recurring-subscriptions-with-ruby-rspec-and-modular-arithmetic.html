@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" ><![endif]-->
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width" initial-scale="1.0" name="viewport" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="todo" />
+    <meta name="author" content="todo" />
+
+    
+      <title>Recurring subscriptions with Ruby, RSpec and modular arithmetic - dmcca.be</title>
+    
+
+    <link href='/assets/styles-c0082f636c8acf2a3235ec4939dfc38a.css' rel='stylesheet' type='text/css' />
+
+
+    <script src='/assets/modernizr-a6bf03e55484d99d7f2bb5db16464bac.js' type='text/javascript'></script>
+
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+  </head>
+
+  <body>
+    <div class="off-canvas-wrap">
+      <div class="inner-wrap">
+        <nav class="tab-bar show-for-small" id="mobile-sidebar">
+          <section class="left-small">
+            <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+          </section>
+
+          <section class="middle tab-bar-section">
+            <h1 class="title">Devin McCabe</h1>
+          </section>
+        </nav>
+
+        <aside class="left-off-canvas-menu">
+          <ul class="off-canvas-list">
+            <li><label>Devin McCabe</label></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/work">Work</a></li>
+            <li class="seperator"><label>Posts</label></li>
+            
+              <li><a href="/2014/01/09/recurring-subscriptions-with-ruby-rspec-and-modular-arithmetic.html">Recurring subscriptions with Ruby, RSpec and modular arithmetic</a></li>
+            
+            <li><a href="/archive" class="archive">more posts&hellip;</a></li>
+          </ul>
+        </aside>
+
+        <a class="exit-off-canvas" href="#"></a>
+
+        <div class="row">
+          <div class="medium-3 large-3 columns">
+            <div class="hide-for-small">
+              <div id="sidebar">
+                <header role="banner">
+                  <h1>
+                    <a href="/">
+                      <img src="http://www.gravatar.com/avatar/debd4b932609bb208893ec7eedf8ba9c?s=200" alt="" />
+                      <div>Devin McCabe</div>
+                    </a>
+                  </h1>
+
+                  <ul id="subtitle">
+                    <li>full-stack web developer</li>
+                    <li>math/stats nerd</li>
+                    <li>cheeseburger enthusiast</li>
+                  </ul>
+                </header>
+
+                <nav role="navigation">
+                  <ul class="main-navigation side-nav">
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/work">Work</a></li>
+                    <li>
+                      <a href="/"> Posts</a>
+                      <ul>
+                        
+                          <li><a href="/2014/01/09/recurring-subscriptions-with-ruby-rspec-and-modular-arithmetic.html">Recurring subscriptions with Ruby, RSpec and modular arithmetic</a></li>
+                        
+                        <li><a href="/archive" class="archive">more posts&hellip;</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+          <div class="medium-9 large-9 columns">
+            <div id="main"><div class="post">
+  <h2>
+    
+      Recurring subscriptions with Ruby, RSpec and modular arithmetic
+    
+  </h2>
+  <p class="post-info">
+    January 09, 2014
+    
+      &bull; <a href="/2014/01/09/recurring-subscriptions-with-ruby-rspec-and-modular-arithmetic.html">Permalink</a>
+      
+        &bull; <a href="https://github.com/dpmccabe/subscriptions-with-ruby" target="_blank">GitHub</a>
+      
+    
+  </p>
+
+  
+    <article>
+      <p>Whether you&#39;re developing the latest offering in the monthly subscription box space or simply adding a recurring subscription option to your e-commerce platform, you&#39;ll likely find that figuring out how to model subscriptions isn&#39;t the most obvious thing. Well, it&#39;s not obvious unless you&#39;ve come across modular arithmetic in a discrete mathematics or CS course.</p>
+
+<h3>A typical use case</h3>
+
+<p>Say you&#39;re launching a fruit delivery business where a customer can sign up for recurring shipment of (hopefully) fresh fruit at an interval of their choice.</p>
+
+<p>A new customer signing up on January 1 wishing to receive a shipment of fruit every 14 days will need their subscription processed on January 1, January 15, January 29, February 12, and so on. Another customer visiting your site on January 5 might opt for a less frequent delivery of every 30 days and will need their subscription processed on January 5, February 4, March 6, and so on.</p>
+
+<h3>So, how do we represent this information programmatically?</h3>
+
+<p>An inexperienced developer might think: &quot;I know&hellip;I&#39;ll generate a hundred years of processing dates (just to be safe) and store them in my database.&quot;</p>
+
+<p>Obviously, this solution is less than ideal and ignores the fact that there are simple mathematical concepts underlying this system. Recognizing these concepts when coding will make it easier to do things like:</p>
+
+<ul>
+<li>determine which subscriptions should be processed on a given date</li>
+<li>display the next <em>n</em> dates a subscription should be processed</li>
+<li>allow a customer to change their subscription&#39;s frequency or processing date</li>
+</ul>
+
+<!-- more -->
+
+<h3>Your business&#39;s first few weeks of customers</h3>
+
+<p>Consider only customers who want fruit deliveries every 7 days. Anyone who signs up for weekly deliveries on Wednesday, January 1, 2014 will be in <strong>Group 0</strong> and they&#39;ll have their subscriptions processed on all future Wednesdays. Fruit connoisseurs who sign up on Thursday, January 2 will be in <strong>Group 1</strong> and will have their subscriptions processed on all future Thursdays. Filling in the rest of the week:</p>
+
+<table>
+  <tr><th>Signup day</th><th>Group</th></tr>
+  <tr><td>January 1 (Wednesday)</td><td>0</td></tr>
+  <tr><td>January 2 (Thursday)</td><td>1</td></tr>
+  <tr><td>January 3 (Friday)</td><td>2</td></tr>
+  <tr><td>January 4 (Saturday)</td><td>3</td></tr>
+  <tr><td>January 5 (Sunday)</td><td>4</td></tr>
+  <tr><td>January 6 (Monday)</td><td>5</td></tr>
+  <tr><td>January 7 (Tuesday)</td><td>6</td></tr>
+</table>
+
+<p>On January 8, we&#39;ll process the subscriptions for <strong>Group 0</strong> as expected, but we&#39;ll also get some new customers. Since those new January 8 signups will also have all subsequent subscriptions processed on Wednesdays, we&#39;ll put them in <strong>Group 0</strong> as well. Similarly, January 9 signups belong in <strong>Group 1</strong>.</p>
+
+<p>You can now see that as the weeks and months progress, new customers for each subsequent day will cycle through <strong>Groups 0-6</strong> in order. This <strong>0, 1, 2, 3, 4, 5, 6</strong> cycle bears resemblance to the sequence of numbers on a face of a clock, which is why <a href="http://en.wikipedia.org/wiki/Modular_arithmetic" target="_blank">modular arithmetic</a>, as this system is known, is sometimes referred to as &quot;clock arithmetic&quot;.</p>
+
+<h3>There&#39;s some kind of residue all over my code</h3>
+
+<p>If we launched our site on January 1, which group does a customer signing up for a weekly subscription on February 10 belong to? The cyclic nature of modular arithmetic can also be described using division and remainders. Let&#39;s improve our earlier table:</p>
+
+<table>
+  <tr><th>Signup day</th><th>Group</th><th>Days since January 1 = <em>d</em></th><th><em>d</em> (mod 7)</th></tr>
+  <tr><td>January 1 (Wednesday)</td><td>0</td><td>0</td><td>0</td></tr>
+  <tr><td>January 2 (Thursday)</td><td>1</td><td>1</td><td>1</td></tr>
+  <tr><td>January 3 (Friday)</td><td>2</td><td>2</td><td>2</td></tr>
+  <tr><td>January 4 (Saturday)</td><td>3</td><td>3</td><td>3</td></tr>
+  <tr><td>January 5 (Sunday)</td><td>4</td><td>4</td><td>4</td></tr>
+  <tr><td>January 6 (Monday)</td><td>5</td><td>5</td><td>5</td></tr>
+  <tr><td>January 7 (Tuesday)</td><td>6</td><td>6</td><td>6</td></tr>
+  <tr><td>January 8 (Wednesday)</td><td>0</td><td>7</td><td>0</td></tr>
+  <tr><td>January 9 (Thursday)</td><td>1</td><td>8</td><td>1</td></tr>
+  <tr><td>January 10 (Friday)</td><td>2</td><td>9</td><td>2</td></tr>
+</table>
+
+<p>We can see that <em>d</em> (mod 7) (the remainder of <em>d</em> &div; 7) is the calculation needed to generate the group. Since February 10 is 40 days after January 1 and 40 (mod 7) = 5, customers signing up on that day are in <strong>Group 5</strong>.</p>
+
+<p>Put another way, all customers in <strong>Group 5</strong>, regardless of which Sunday they signed up on, are members of same <a href="http://mathworld.wolfram.com/ResidueClass.html" target="_blank">residue class</a> (modulo 7).</p>
+
+<p>We can also determine whether a subscription will be processed on some future date if that date&#39;s residue is equal to the residue of that subscription. On June 8, 2014 (158 days since January 1), we will need to process <strong>Group 4</strong> since 158 (mod 7) = 4.</p>
+
+<p>Keep in mind that we chose 7 for the interval in the previous example for simplicity&#39;s sake, but our code needs to work for any interval and any signup date.</p>
+
+<h3>Coding the Ruby class</h3>
+
+<p>We&#39;ll start with a plain Ruby class, but include ActiveSupport Core Extensions for their useful date features and <code>cattr_reader</code>.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="nb">require</span> <span class="s1">&#39;active_support/core_ext&#39;</span>
+
+<span class="k">class</span> <span class="nc">Subscription</span>
+  <span class="n">cattr_reader</span> <span class="ss">:beginning</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:interval</span><span class="p">,</span> <span class="ss">:start_date</span>
+  <span class="kp">attr_reader</span> <span class="ss">:residue</span>
+
+  <span class="vc">@@beginning</span> <span class="o">=</span> <span class="no">Date</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span> <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">unless</span> <span class="n">v</span><span class="o">.</span><span class="n">nil?</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>In case you&#39;ve never seen it, this is boilerplate Ruby code to initialize instance variables and declare attribute access. We can now create instances of our Subscription class like so:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="no">Date</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="c1"># =&gt; #&lt;Subscription:0x007fb8e79f38d0 @interval=14, @start_date=Mon, 10 Feb 2014&gt;</span>
+</code></pre></div>
+
+<p>Note that we&#39;ll need the class instance variable <code>@@beginning</code> to represent &quot;Day 0&quot; in our system. Choosing any date in the past makes sense for our purposes, but we need some fixed reference point to calculate the residues.</p>
+
+<h3>Help needed</h3>
+
+<p>To make our RSpec a bit cleaner, we&#39;ll write a few helper methods first.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">module</span> <span class="nn">SubscriptionSpecHelpers</span>
+  <span class="k">def</span> <span class="nf">residues</span><span class="p">(</span><span class="n">subscriptions</span><span class="p">)</span>
+    <span class="n">subscriptions</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:residue</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">unique_residues</span><span class="p">(</span><span class="n">subscriptions</span><span class="p">)</span>
+    <span class="n">subscriptions</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:residue</span><span class="p">)</span><span class="o">.</span><span class="n">uniq</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">beginning</span> <span class="c1"># 2014-01-01 in our example</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">beginning</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<h3>Testing residue calculation</h3>
+
+<p>The first thing we&#39;ll want to test is calculating the residue for a new subscription, given some interval and start date. Let&#39;s write the test first.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">it</span> <span class="s1">&#39;computes members of the residue class 0&#39;</span> <span class="k">do</span>
+  <span class="n">subscriptions</span> <span class="o">=</span> <span class="o">[</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span><span class="p">),</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">7</span><span class="o">.</span><span class="n">days</span><span class="p">),</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">70</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+  <span class="o">]</span>
+
+  <span class="n">expect</span><span class="p">(</span><span class="n">unique_residues</span><span class="p">(</span><span class="n">subscriptions</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>So, we expect that a customer who creates a weekly subscription on January 1, 2014 (our &quot;beginning&quot;) would have residue = 0. Subscriptions created 7 or 70 days later should also have residue = 0.</p>
+
+<p>It&#39;s not really possible to test every future starting date for a weekly subscription, but lets just write a few more tests to make sure we&#39;re calculating a few residues correctly.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">it</span> <span class="s1">&#39;computes members of the residue class 1&#39;</span> <span class="k">do</span>
+  <span class="n">subscriptions</span> <span class="o">=</span> <span class="o">[</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">1</span><span class="o">.</span><span class="n">day</span><span class="p">),</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">8</span><span class="o">.</span><span class="n">days</span><span class="p">),</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">71</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+  <span class="o">]</span>
+
+  <span class="n">expect</span><span class="p">(</span><span class="n">unique_residues</span><span class="p">(</span><span class="n">subscriptions</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">it</span> <span class="s1">&#39;computes members of all possible residue classes&#39;</span> <span class="k">do</span>
+  <span class="n">subscriptions</span> <span class="o">=</span> <span class="o">[</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span><span class="p">),</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">1</span><span class="o">.</span><span class="n">day</span><span class="p">),</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">2</span><span class="o">.</span><span class="n">days</span><span class="p">),</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">3</span><span class="o">.</span><span class="n">days</span><span class="p">),</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">4</span><span class="o">.</span><span class="n">days</span><span class="p">),</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">5</span><span class="o">.</span><span class="n">days</span><span class="p">),</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">6</span><span class="o">.</span><span class="n">days</span><span class="p">),</span>
+    <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">7</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+  <span class="o">]</span>
+
+  <span class="n">expect</span><span class="p">(</span><span class="n">residues</span><span class="p">(</span><span class="n">subscriptions</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="o">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>Here, we&#39;re confirming that our <strong>Group 1</strong> (residue = 1) is constructed correctly for a few different start dates and that our first 7 days of signups are correctly cycled into the right group.</p>
+
+<h3>Getting our residue tests to pass</h3>
+
+<p>First, we&#39;ll need a utility method to compute the residue for a provided date.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">residue_for_date</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+  <span class="p">(</span><span class="n">date</span> <span class="o">-</span> <span class="vc">@@beginning</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span><span class="o">.</span><span class="n">modulo</span><span class="p">(</span><span class="vi">@interval</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>This method is provided a date, calculates the number of days since <code>@@beginning</code>, and returns the residue thanks to Ruby&#39;s helpful <code>modulo</code> method. You can also use the more familiar <code>%</code> operator if you prefer.</p>
+
+<p>Next, let&#39;s automatically compute the residue when a <code>Subscription</code> is initialized and store it in the <code>@residue</code> instance variable.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+  <span class="n">args</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span> <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">unless</span> <span class="n">v</span><span class="o">.</span><span class="n">nil?</span> <span class="p">}</span>
+  <span class="n">compute_residue</span>
+<span class="k">end</span>
+
+<span class="kp">private</span>
+
+<span class="k">def</span> <span class="nf">residue_for_date</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+  <span class="p">(</span><span class="n">date</span> <span class="o">-</span> <span class="vc">@@beginning</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span><span class="o">.</span><span class="n">modulo</span><span class="p">(</span><span class="vi">@interval</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">compute_residue</span>
+  <span class="vi">@residue</span> <span class="o">=</span> <span class="n">residue_for_date</span><span class="p">(</span><span class="vi">@start_date</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>Now our tests above will pass.</p>
+
+<h3>Should I process the subscription on some date?</h3>
+
+<p>The other key feature left to implement is a method that lets us determine if a certain subscription should be processed on a given date or not. Again, we&#39;ll write the tests first.</p>
+
+<p>Just to mix things up, we&#39;ll consider a customer buying a subscription on January 12, 2014 and preferring a fruit delivery every 30 days. We want our <code>process_on?</code> method to return <code>true</code> on that day and 30 days later, but <code>false</code> 29 days later, for instance.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">context</span> <span class="s1">&#39;when the subscription is every 30 days and starts 11 days after the beginning&#39;</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:subscription</span><span class="p">)</span> <span class="p">{</span> <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">11</span><span class="o">.</span><span class="n">days</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="n">it</span> <span class="s1">&#39;processes it on its start date&#39;</span> <span class="k">do</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">subscription</span><span class="o">.</span><span class="n">process_on?</span><span class="p">(</span><span class="n">beginning</span> <span class="o">+</span> <span class="mi">11</span><span class="o">.</span><span class="n">days</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">be_true</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s1">&#39;processes it on its next processing date&#39;</span> <span class="k">do</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">subscription</span><span class="o">.</span><span class="n">process_on?</span><span class="p">(</span><span class="n">beginning</span> <span class="o">+</span> <span class="mi">11</span><span class="o">.</span><span class="n">days</span> <span class="o">+</span> <span class="mi">30</span><span class="o">.</span><span class="n">days</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">be_true</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s1">&#39;does not process it on the day before its next processing date&#39;</span> <span class="k">do</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">subscription</span><span class="o">.</span><span class="n">process_on?</span><span class="p">(</span><span class="n">beginning</span> <span class="o">+</span> <span class="mi">11</span><span class="o">.</span><span class="n">days</span> <span class="o">+</span> <span class="mi">29</span><span class="o">.</span><span class="n">days</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">be_false</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>To write this method, our work is cut out for us.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">process_on?</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+  <span class="n">residue_for_date</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">==</span> <span class="vi">@residue</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>The new tests pass. Now, remember that on some day in the future, we&#39;ll probably be processing subscriptions for customers who specified different intervals. For example, a subscription created on January 1 with an interval of 10 days will be processed on January 31, but so will a subscription created on January 11 with an interval of 20 days. Let&#39;s write a test for that situation just to be sure.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">it</span> <span class="s1">&#39;should process subscriptions of different intervals on the same day when applicable&#39;</span> <span class="k">do</span>
+  <span class="n">subscription_1</span> <span class="o">=</span> <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span><span class="p">)</span>
+  <span class="n">subscription_2</span> <span class="o">=</span> <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">2</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+  <span class="n">subscription_3</span> <span class="o">=</span> <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">5</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+  <span class="n">subscription_4</span> <span class="o">=</span> <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">5</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+
+  <span class="n">common_date</span> <span class="o">=</span> <span class="no">Date</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+
+  <span class="n">expect</span><span class="p">(</span><span class="n">subscription_1</span><span class="o">.</span><span class="n">process_on?</span><span class="p">(</span><span class="n">common_date</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">be_true</span>
+  <span class="n">expect</span><span class="p">(</span><span class="n">subscription_2</span><span class="o">.</span><span class="n">process_on?</span><span class="p">(</span><span class="n">common_date</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">be_true</span>
+  <span class="n">expect</span><span class="p">(</span><span class="n">subscription_3</span><span class="o">.</span><span class="n">process_on?</span><span class="p">(</span><span class="n">common_date</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">be_true</span>
+  <span class="n">expect</span><span class="p">(</span><span class="n">subscription_4</span><span class="o">.</span><span class="n">process_on?</span><span class="p">(</span><span class="n">common_date</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">be_false</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>Sure enough, our collection of miscellaneous subscriptions with different intervals and start dates will get processed on the same day when applicable.</p>
+
+<h3>Next processing date</h3>
+
+<p>It would certainly be useful to know the next date a subscription will be processed on, both for internal use and, perhaps, to display to the customer in their account information.</p>
+
+<p>Thankfully, this is also a simple calculation. For a subscription starting on March 19 and an interval of 21 days, we know by counting days that our next processing dates will be April 9 and April 30. How would we calculate this? Naturally, the answer has something to do with residues again.</p>
+
+<p>Our example subscription has residue = 14 and we&#39;ll call this value <em>sr</em>. Let&#39;s consider some example dates and compare the residues of these days with our subscription&#39;s residue.</p>
+
+<table>
+  <tr><th>Date</th><th>Residue = <em>dr</em></th><th><em>sr</em> - <em>dr</em></th><th>(<em>sr</em> - <em>dr</em>) (mod 21) = <em>m</em></th><th>Date + <em>m</em>.days</th></tr>
+  <tr><td>March 19</td><td>14</td><td>0</td><td>0</td><td>March 19</td></tr>
+  <tr><td>March 20</td><td>15</td><td>-1</td><td>20</td><td>April 9</td></tr>
+  <tr><td>March 21</td><td>16</td><td>-2</td><td>19</td><td>April 9</td></tr>
+  <tr><td>March 24</td><td>19</td><td>-5</td><td>16</td><td>April 9</td></tr>
+  <tr><td>April 2</td><td>7</td><td>7</td><td>7</td><td>April 9</td></tr>
+  <tr><td>April 8</td><td>13</td><td>1</td><td>1</td><td>April 9</td></tr>
+  <tr><td>April 9</td><td>14</td><td>0</td><td>0</td><td>April 9</td></tr>
+  <tr><td>April 10</td><td>15</td><td>-1</td><td>20</td><td>April 30</td></tr>
+</table>
+
+<p>Now the pattern is becoming clear. We know that on any given date, it&#39;s either the day we&#39;re processing this subscription or it&#39;s at most 20 days away from the next processing date. The difference in residues gives us the number of days we need to move forward to reach the next processing date. However, when <em>sr</em> - <em>dr</em> is negative, we&#39;d actually be moving back in time to the previous processing date, so we should advance (21 - (<em>sr</em> - <em>dr</em>)) days into the future. Calculating <em>sr</em> - <em>dr</em> (mod 21) gives us the correct number of days into the future regardless of the sign of <em>sr</em> - <em>dr</em>.</p>
+
+<p>The spec and code follows as such.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">context</span> <span class="s1">&#39;when the subscription is every 10 days and starts 4 days after the beginning&#39;</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:subscription</span><span class="p">)</span> <span class="p">{</span> <span class="no">Subscription</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">interval</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">beginning</span> <span class="o">+</span> <span class="mi">4</span><span class="o">.</span><span class="n">days</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="n">it</span> <span class="s1">&#39;calculates the first processing date&#39;</span> <span class="k">do</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">subscription</span><span class="o">.</span><span class="n">next_processing_date</span><span class="p">(</span><span class="n">beginning</span> <span class="o">+</span> <span class="mi">4</span><span class="o">.</span><span class="n">days</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="n">beginning</span> <span class="o">+</span> <span class="mi">4</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s1">&#39;calculates the next processing date 1 day later&#39;</span> <span class="k">do</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">subscription</span><span class="o">.</span><span class="n">next_processing_date</span><span class="p">(</span><span class="n">beginning</span> <span class="o">+</span> <span class="mi">4</span><span class="o">.</span><span class="n">days</span> <span class="o">+</span> <span class="mi">1</span><span class="o">.</span><span class="n">day</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="n">beginning</span> <span class="o">+</span> <span class="mi">14</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s1">&#39;calculates the next processing date 10 days later&#39;</span> <span class="k">do</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">subscription</span><span class="o">.</span><span class="n">next_processing_date</span><span class="p">(</span><span class="n">beginning</span> <span class="o">+</span> <span class="mi">4</span><span class="o">.</span><span class="n">days</span> <span class="o">+</span> <span class="mi">10</span><span class="o">.</span><span class="n">days</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="n">beginning</span> <span class="o">+</span> <span class="mi">14</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s1">&#39;calculates the third processing date 17 days later&#39;</span> <span class="k">do</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">subscription</span><span class="o">.</span><span class="n">next_processing_date</span><span class="p">(</span><span class="n">beginning</span> <span class="o">+</span> <span class="mi">4</span><span class="o">.</span><span class="n">days</span> <span class="o">+</span> <span class="mi">17</span><span class="o">.</span><span class="n">days</span><span class="p">))</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="n">beginning</span> <span class="o">+</span> <span class="mi">24</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+  <span class="k">end</span>
+</code></pre></div>
+
+<p>The code that passes these tests is another simple one-liner.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">next_processing_date</span><span class="p">(</span><span class="n">from_date</span><span class="p">)</span>
+  <span class="n">from_date</span> <span class="o">+</span> <span class="p">((</span><span class="vi">@residue</span> <span class="o">-</span> <span class="n">residue_for_date</span><span class="p">(</span><span class="n">from_date</span><span class="p">))</span><span class="o">.</span><span class="n">modulo</span><span class="p">(</span><span class="vi">@interval</span><span class="p">))</span><span class="o">.</span><span class="n">days</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>Our <code>next_processing_date</code> method also makes it easy to fetch any number of future processing dates.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">next_n_processing_dates</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">from_date</span><span class="p">)</span>
+  <span class="n">first_next_processing_date</span> <span class="o">=</span> <span class="n">next_processing_date</span><span class="p">(</span><span class="n">from_date</span><span class="p">)</span>
+  <span class="mi">0</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">first_next_processing_date</span> <span class="o">+</span> <span class="p">(</span><span class="vi">@interval</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">days</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<h3>Using recurring subscriptions in a real project</h3>
+
+<p>If you&#39;re reading this, you&#39;re probably using some combination of a Ruby framework, ORM, and database. Integrating this <code>Subscription</code> class is simple a matter of persisting the <code>interval</code> and <code>residue</code> attributes in your <code>Subscription</code> record (after validating them) along with whatever other information you&#39;re storing per subscription.</p>
+
+<p>Given the popularity of monthly &quot;subscription box&quot; services in recent years&mdash;I&#39;ve built a few, myself&mdash;you might be more inclined to process your subscriptions on a monthly basis, rather than daily. Surely, you could process a monthly subscription every 30 days, but anyone who&#39;s looked at a calendar recently knows that&#39;s not quite the same thing.</p>
+
+<p>The GitHub repo, <a href="https://github.com/dpmccabe/subscriptions-with-ruby" taret="_blank">subscriptions-with-ruby</a>, offers some modifications to this <code>Class</code> that enable monthly subscriptions, in addition to a more robust test suite.</p>
+
+
+      
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'dpmccabe'; // required: replace example with your forum shortname
+          var disqus_identifier = '/2014/01/09/recurring-subscriptions-with-ruby-rspec-and-modular-arithmetic.html';
+          var disqus_title = 'Recurring subscriptions with Ruby, RSpec and modular arithmetic';
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+        </script>
+      
+    </article>
+  
+</div>
+
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="row">
+        <div class="large-12 columns">
+          <p class="text-center">Powered by <a href="http://jekyllrb.com/">Jekyll</a>, <a href="http://foundation.zurb.com/">Zurb Foundation</a> and <a href="http://pages.github.com/">GitHub Pages</a></p>
+        </div>
+      </div>
+    </footer>
+
+    <script src='/assets/javascripts-22523bd865ea73e748ca25e90c0f3bdd.js' type='text/javascript'></script>
+
+</body></html>
