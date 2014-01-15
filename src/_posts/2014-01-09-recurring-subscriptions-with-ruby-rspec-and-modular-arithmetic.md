@@ -14,7 +14,7 @@ Say you're launching a fruit delivery business where a customer can sign up for 
 
 A new customer signing up on January 1 wishing to receive a shipment of fruit every 14 days will need their subscription processed on January 1, January 15, January 29, February 12, and so on. Another customer visiting your site on January 5 might opt for a less frequent delivery of every 30 days and will need their subscription processed on January 5, February 4, March 6, and so on.
 
-### So, how does we represent this information programmatically?
+### So, how do we represent this information programmatically?
 
 An inexperienced developer might think: "I know&hellip;I'll generate a hundred years of processing dates (just to be safe) and store them in my database."
 
