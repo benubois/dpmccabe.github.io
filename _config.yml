@@ -1,4 +1,5 @@
 name: dmcca.be
+domain: http://dmcca.be
 markdown: redcarpet
 pygments: true
 asset_pipeline:
